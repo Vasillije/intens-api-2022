@@ -12,16 +12,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t my-app .
+        run: docker build -t praksa2022 .
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: \${{ secrets.EC2_HOST }}
-          username: \${{ secrets.EC2_USER }}
-          key: \${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull my-app || true
-            docker stop my-app || true
-            docker rm my-app || true
-            docker run -d -p 8080:8080 --name my-app my-app" > .github/workflows/cd.yml
+            docker pull praksa2022 || true
+            docker stop praksa2022 || true
+            docker rm praksa2022 || true
+            docker run -d -p 8080:8080 --name praksa2022 praksa2022
