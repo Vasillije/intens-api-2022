@@ -1,0 +1,27 @@
+name: CD Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t my-app .
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: \${{ secrets.EC2_HOST }}
+          username: \${{ secrets.EC2_USER }}
+          key: \${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull my-app || true
+            docker stop my-app || true
+            docker rm my-app || true
+            docker run -d -p 8080:8080 --name my-app my-app" > .github/workflows/cd.yml
